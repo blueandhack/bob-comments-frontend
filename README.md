@@ -1,6 +1,6 @@
 # Bob Community Frontend
 
-First of all, I chose Ant Design as the UI framework because it was my first choice about 6 years ago when I was a funding engineer, and there were only two engineers in our team, so we needed a UI framework that could help us build the UI quickly, and Ant Design is a good choice for that.
+First of all, I chose Ant Design as the UI framework because it was my first choice about 6 years ago when I was a founding engineer, and there were only two engineers in our team, so we needed a UI framework that could help us build the UI quickly, and Ant Design is a good choice for that.
 
 Same as backend, the project is inspired by my old boilerplate project [kelp](https://github.com/blueandhack/kelp), which also used Ant Design.
 
@@ -14,9 +14,9 @@ I also considered just modifying the local comments state when adding, updating,
 
 The page design is very simple:
 
-NewComment
-Comments:
- - CommentCard
+- NewComment
+- Comments:
+  - CommentCard
 
 So, the user can add a new comment by the NewComment component, and the comments will show by the CommentCard component. The CommentCard component will show the comment content, the author name, the created time, and the picture if available, the edit button, and the delete button. The edit button will show the text area, and the delete button will delete the comment.
 
