@@ -1,4 +1,4 @@
-import { Flex, Typography, Button, Divider } from 'antd';
+import { Flex, Typography, Button, Divider, Select } from 'antd';
 import CommentCard from './components/CommentCard';
 import { CommentsContext } from './context/CommentsContext';
 import NewComment from './components/NewComment';
@@ -7,7 +7,7 @@ import { useContext } from 'react';
 // import './App.css'
 
 function App() {
-  const { comments, getComments } = useContext(CommentsContext);
+  const { comments, getComments, settings, updateSettings } = useContext(CommentsContext);
 
   return (
     <div style={{ maxWidth: 640, margin: '32px auto', padding: '0 16px' }}>
@@ -23,6 +23,36 @@ function App() {
       </Flex>
       <Divider />
       <NewComment />
+      <Divider>
+      </Divider>
+      <Flex gap={8}>
+        <Select
+          value={settings.orderBy}
+          style={{ width: 120 }}
+          onChange={(value) => {
+            updateSettings("orderBy", value);
+          }}
+          options={[
+            { value: "id", label: "ID" },
+            { value: "date", label: "Date" }
+          ]}
+        >
+        </Select>
+        <Select
+          value={settings.sort}
+          style={{ width: 120 }}
+          onChange={(value) => {
+            updateSettings("sort", value);
+          }}
+          options={[
+            { value: "asc", label: "Asc" },
+            { value: "desc", label: "Desc" }
+          ]}
+        >
+        </Select>
+      </Flex>
+      <Divider></Divider>
+
       <Flex vertical gap={10}>
         {comments.map((comment) => (
           <Flex vertical key={comment.id} gap={10}>

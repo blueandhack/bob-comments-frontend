@@ -8,3 +8,15 @@ export interface Comment {
   likes: number;
   image: string | null | undefined | "";
 }
+
+
+export interface Settings {
+  orderBy: string;
+  sort: string;
+}
+
+
+export const defaultSettings = {
+  orderBy: "date",
+  sort: "desc"
+}

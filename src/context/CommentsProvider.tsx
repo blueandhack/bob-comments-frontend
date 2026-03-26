@@ -1,14 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, version } from 'react';
 import { notification } from 'antd';
-import type { Comment } from '../models';
+import { defaultSettings, type Comment } from '../models';
 import { CommentsContext } from './CommentsContext';
 
 export function CommentsProvider({ children }: { children: React.ReactNode }) {
   const [comments, setComments] = useState<Comment[]>([]);
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem("settings");
+    return saved ? JSON.parse(saved) : defaultSettings;
+  });
 
   useEffect(() => {
     const fetchComments = async () => {
-      const response = await fetch('http://localhost:3001/api/comments');
+      const { orderBy, sort } = settings;
+      const response = await fetch('http://localhost:3001/api/comments?orderBy=' + orderBy + "&sort=" + sort);
       if (!response.ok) {
         notification.error({ title: 'Error', description: 'Failed to fetch comments' });
         throw new Error('Failed to fetch comments');
@@ -18,10 +23,17 @@ export function CommentsProvider({ children }: { children: React.ReactNode }) {
       setComments(data);
     };
     fetchComments();
-  }, []);
+  }, [settings]);
+
+  const updateSettings = (key: string, value: string) => {
+    const newSettings = { ...settings, [key]: value };
+    setSettings(newSettings);
+    localStorage.setItem("settings", JSON.stringify(newSettings));
+  }
 
   const getComments = async () => {
-    const response = await fetch('http://localhost:3001/api/comments');
+    const { orderBy, sort } = settings;
+    const response = await fetch('http://localhost:3001/api/comments?orderBy=' + orderBy + "&sort=" + sort);
     if (!response.ok) {
       notification.error({ title: 'Error', description: 'Failed to fetch comments' });
       throw new Error('Failed to fetch comments');
@@ -75,7 +87,7 @@ export function CommentsProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <CommentsContext.Provider value={{ comments, addComment, editComment, deleteComment, getComments }}>
+    <CommentsContext.Provider value={{ comments, settings, updateSettings, addComment, editComment, deleteComment, getComments }}>
       {children}
     </CommentsContext.Provider>
   );
